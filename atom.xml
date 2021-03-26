@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>老八</title>
+  
+  
+  <link href="http://example.com/atom.xml" rel="self"/>
+  
+  <link href="http://example.com/"/>
+  <updated>2021-03-25T13:02:42.313Z</updated>
+  <id>http://example.com/</id>
+  
+  <author>
+    <name>JunHao</name>
+    
+  </author>
+  
+  <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>计算机专业是否还有读的必要</title>
+    <link href="http://example.com/2021/03/15/film/"/>
+    <id>http://example.com/2021/03/15/film/</id>
+    <published>2021-03-14T16:03:00.000Z</published>
+    <updated>2021-03-25T13:02:42.313Z</updated>
+    
+    <content type="html"><![CDATA[<p>​        现今人人都说计算机专业是最挣钱的专业，可是没有人关心幸存者偏差，往往那些赚了大钱的计算机领域的人士被人们记住，在底层苟且的程序员却被忽视，这是多么值得人们思考。</p><iframe src="//player.bilibili.com/player.html?aid=247198732&bvid=BV14v411a753&cid=310427801&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"> </iframe><p>​        上视频展现了一位当代程序员的工作生涯，它的头发越来越少，脸上的笑容也越发灿烂，他深知自己已经进入计算机的泥潭无法自拔，于是展现了这无可奈何的笑。</p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;​        现今人人都说计算机专业是最挣钱的专业，可是没有人关心幸存者偏差，往往那些赚了大钱的计算机领域的人士被人们记住，在底层苟且的程序员却被忽视，这是多么值得人们思考。&lt;/p&gt;
+&lt;iframe src=&quot;//player.bilibili.com/player.h</summary>
+      
+    
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>秦岭探险记</title>
+    <link href="http://example.com/2021/03/14/sdfsdf/"/>
+    <id>http://example.com/2021/03/14/sdfsdf/</id>
+    <published>2021-03-14T08:54:19.000Z</published>
+    <updated>2021-03-14T15:49:23.934Z</updated>
+    
+    <content type="html"><![CDATA[<p>​        今天我去秦岭山里玩了，见到了大熊猫还有它的妈妈，经过我的一番教导，大熊猫睡着了。</p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;​        今天我去秦岭山里玩了，见到了大熊猫还有它的妈妈，经过我的一番教导，大熊猫睡着了。&lt;/p&gt;
+</summary>
+      
+    
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>秦岭探险记</title>
+    <link href="http://example.com/2021/03/14/first/"/>
+    <id>http://example.com/2021/03/14/first/</id>
+    <published>2021-03-13T16:00:00.000Z</published>
+    <updated>2021-03-14T15:49:13.038Z</updated>
+    
+    <content type="html"><![CDATA[<p>​        今天我去秦岭转了一圈，见到了许许多多的大熊猫！我非常地惊奇，这些大熊猫是这么地可爱和胖，于是我决定好好学习，争取以后和他们一样悠闲自在。</p><p><img src="https://wx1.sinaimg.cn/mw690/0074eM11ly1gojsd6s9xgj30hs0dcabk.jpg" alt="I"></p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;​        今天我去秦岭转了一圈，见到了许许多多的大熊猫！我非常地惊奇，这些大熊猫是这么地可爱和胖，于是我决定好好学习，争取以后和他们一样悠闲自在。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://wx1.sinaimg.cn/mw690/0074eM11ly1go</summary>
+      
+    
+    
+    
+    
+  </entry>
+  
+</feed>
