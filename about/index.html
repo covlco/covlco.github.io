@@ -1,88 +1,106 @@
-<html>
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="referrer" content="no-referrer" />
-    <!--防止屏蔽外链-->
-    <title>成功人士的网站</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,700;1,700&display=swap"
-        rel="stylesheet">
-    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
-        integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
-    <link rel="icon" href="https://i.pinimg.com/originals/4a/a5/df/4aa5df83115df6c96732a2d76ccb4f1b.jpg"
-        type="image/x-icon">
-    
-<link rel="stylesheet" href="/css/styles.css">
+<?php
 
-<meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="老八" type="application/atom+xml">
-</head>
+require  __DIR__.'/init.php';
+/**
+ *    程序安装
+ */
+//选择OD国际版?世纪互联版。
+if (strcmp(config('area'),'us')==0){
+	onedrive::$api_url = 'https://graph.microsoft.com/v1.0';
+	onedrive::$oauth_url = 'https://login.microsoftonline.com/common/oauth2/v2.0';
+}else{
+	onedrive::$api_url = "https://microsoftgraph.chinacloudapi.cn/v1.0";
+	onedrive::$oauth_url = "https://login.partner.microsoftonline.cn/common/oauth2/v2.0";
+}
 
-  <body>
-    <div class="container">
-      <!-- Header -->
-      <link rel="icon" href="https://i.pinimg.com/originals/4a/a5/df/4aa5df83115df6c96732a2d76ccb4f1b.jpg"
-  type="image/x-icon">
-<nav id="nav">
-  <header class="header">
-    <a href="/" class="header-title">
-      秦岭教学营 <i class="fa fa-fire" aria-hidden="true"></i>
-    </a>
+if( empty( config('refresh_token') ) ){
+	route::any('/','AdminController@install');
+}
 
-  </header>
+/**
+ *    系统后台
+ */
+route::group(function(){
+	return ($_COOKIE['admin'] == md5(config('password').config('refresh_token')) );
+},function(){
+	route::get('/logout','AdminController@logout');
+	route::any('/admin/','AdminController@settings');
+	route::any('/admin/cache','AdminController@cache');
+	route::any('/admin/show','AdminController@show');
+	route::any('/admin/setpass','AdminController@setpass');
+	route::any('/admin/images','AdminController@images');
+    route::any('/admin/offline','AdminController@offline');
+	route::any('/admin/upload','UploadController@index');
+	//守护进程
+	route::any('/admin/upload/run','UploadController@run');
+	//上传进程
+	route::post('/admin/upload/task','UploadController@task');
+});
+//登陆
+route::any('/login','AdminController@login');
+
+//onedrive操作
+route::any('/offline','CommonController@offline');
+route::any('/onlinefileupload','CommonController@onlinefileupload');
+route::any('/create_folder','CommonController@create_folder');
+route::any('/rename','CommonController@rename');
+route::any('/deleteitems','CommonController@deleteitems');
+route::any('/search','CommonController@search');
+route::any('/paste','CommonController@paste');
+route::any('/upload_url','CommonController@upload_url');
+//跳转到登陆
+route::any('/admin/',function(){
+	return view::direct(get_absolute_path(dirname($_SERVER['SCRIPT_NAME'])).'?/login');
+});
+
+define('VIEW_PATH', ROOT.'view/themes/'.(config('style')?config('style'):'material').'/');
+/**
+ *    OneImg
+ */
+$images = config('images@base');
+if( ($_COOKIE['admin'] == md5(config('password').config('refresh_token')) || $images['public']) ){
+	route::any('/images','ImagesController@index');
+	if($images['home']){
+		route::any('/','ImagesController@index');
+	}
+}
 
 
+/**
+ *    列目录
+ */
+route::group(function () {
+	$hotlink = config('onedrive_hotlink');
 
-  <div class="nav-wrapper">
-    <div class="menu">
-      <a href="/" class="nav-menu z-active">HOME</a>
-      <a href="/about" class="nav-menu">ABOUT</a>
-      <a href="/archives" class="nav-menu">ARCHIVE</a>
-    </div>
+	// 未启用防盗链
+	if (!$hotlink) {
+		return true;
+	}
+	// referer 不存在
+	if (!isset($_SERVER['HTTP_REFERER'])) {
+		return true;
+	}
 
-    <div class="icons">
-      <a target="_blank" rel="noopener" href="https://github.com/covlco" class="nav-icon">
-        <i class="fa fa-github-alt" aria-hidden="true"></i>
-      </a>
-      <a target="_blank" rel="noopener" href="https://music.163.com/#/user/home?id=1885188348" class="nav-icon">
-        <i class="fa fa-linkedin-square" aria-hidden="true"></i>
-      </a>
-      <a target="_blank" rel="noopener" href="https://music.163.com/#/user/home?id=1885188348" class="nav-icon">
-        <i class="fa fa-facebook-square" aria-hidden="true"></i>
-      </a>
-    </div>
+	$referer_domain = get_domain($_SERVER['HTTP_REFERER']);
+	// 当前域本身
+	if (str_is(get_domain(), $referer_domain)) {
+		return true;
+	}
 
+	// 白名单
+	$hotlinks = explode(';', $hotlink);
+	$referer = false;
+	
+	foreach ($hotlinks as $_hotlink) {
+		if (str_is(trim($_hotlink), $referer_domain)) {
+			$referer = true;
+		}
+	}
+	if (!$referer) {
+		header('HTTP/1.1 403 Forbidden');
+	}
 
-  </div>
-</nav>
-
-<!-- <hr class="hr-divide-header" align="left"> -->
-
-<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=1120 height=86
-  src="//music.163.com/outchain/player?type=2&id=35090549&auto=1&height=66"></iframe>
-      <div class="about">
-  <p>这是一段自我介绍</p>
- 
-</div> 
-      <!-- Footer -->
-      <!-- <h1>This is the footer.ejs file</h1> -->
-
-<footer class="footer">
-  <p style="margin-top: 0px;">
-    Powered by <a
-      target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E9%98%BF%E9%87%8C%E5%B7%B4%E5%B7%B4%E9%9B%86%E5%9B%A2/9087864?fromtitle=%E9%98%BF%E9%87%8C%E5%B7%B4%E5%B7%B4&fromid=33&fr=aladdin">阿里巴巴</a>
-    Created by <a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E9%83%9D%E5%86%9B/16304235?fr=aladdin">@JunHao</a>
-  </p>
-</footer> 
-    </div>
-
-    <!-- After footer file to store js of Bootstrap -->
-    <!-- <h1>This is the after-footer ejs file</h1> -->
-<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
- 
-  </body>
-
-</html>
+	return $referer;
+}, function() {
+    route::any('{path:#all}','IndexController@index');
+});
