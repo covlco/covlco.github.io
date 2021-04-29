@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2021-04-08T16:47:04.340Z</updated>
+  <updated>2021-04-29T12:52:48.210Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,6 +15,27 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>son</title>
+    <link href="http://example.com/2021/04/29/son/"/>
+    <id>http://example.com/2021/04/29/son/</id>
+    <published>2021-04-29T12:46:37.000Z</published>
+    <updated>2021-04-29T12:52:48.210Z</updated>
+    
+    <content type="html"><![CDATA[<p>​    today!, My son say me baba!<br>$$<br>wang he yan =sb<br>$$<br>you kan see him here:</p><img src="https://wx4.sinaimg.cn/mw690/0074eM11ly1gq0wkqhh8nj30u00u0q4t.jpg">]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;​    today!, My son say me baba!&lt;br&gt;$$&lt;br&gt;wang he yan =sb&lt;br&gt;$$&lt;br&gt;you kan see him here:&lt;/p&gt;
+&lt;img src=&quot;https://wx4.sinaimg.cn/mw690/0074e</summary>
+      
+    
+    
+    
+    
+  </entry>
   
   <entry>
     <title>祝你生日快乐</title>
